@@ -1,0 +1,23 @@
+/* ------------- LINK STYLING ------------- */
+
+a,
+a:visited {
+    color: #6C7789;
+}
+
+a:hover {
+    color: white;
+}
+
+a,
+a:visited,
+a:hover {
+    text-decoration: none;
+}
+
+.link {
+    font-family: 'Roboto';
+    text-align: left;
+    font-size: 20px;
+    padding: 10px;
+}

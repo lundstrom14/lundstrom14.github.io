@@ -4,18 +4,18 @@ let time = 0;
 let wave = [];
 
 function setup() {
-    createCanvas(800, 800);
+    var canvas = createCanvas(1000, 600);
     frameRate(45);
     slider = createSlider(1, 15, 5, 2);
-    slider.position(200, 500);
+    slider.position(200, 550);
 
 }
 
 function draw() {
-    background(0);
+    background(color("#252934"));
     fill(255);
     stroke(255);
-    text('n = ' + slider.value(), slider.x + slider.width + 10, slider.y);
+    text('n = ' + slider.value(), slider.x + slider.width + 10, slider.y - 40);
     translate(250, 300);
     noFill();
 
