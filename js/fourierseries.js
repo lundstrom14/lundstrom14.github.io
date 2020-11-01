@@ -60,5 +60,5 @@ function draw() {
         wave.pop();
     }
 
-    time += 0.04;
+    time += 0.01;
 }
