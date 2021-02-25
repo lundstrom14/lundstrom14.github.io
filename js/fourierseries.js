@@ -5,7 +5,7 @@ let wave = [];
 
 function setup() {
     var canvas = createCanvas(1000, 600);
-    frameRate(45);
+    frameRate(60);
     slider = createSlider(1, 15, 5, 2);
     slider.position(200, 550);
 

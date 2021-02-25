@@ -28,3 +28,13 @@ a:hover {
     font-size: 1.2vw;
     padding: 10px 0 0 15px;
 }
+
+.canvas {
+    transform: scaleX(-1);
+}
+
+.info {
+    font-family: 'Courier New';
+    font-size: 0.8vw;
+    text-align: left;
+}

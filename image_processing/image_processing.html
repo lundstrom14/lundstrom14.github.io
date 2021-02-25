@@ -44,7 +44,11 @@
             <div class="box-container-canvas" id="container">
                 <video id="webcam" autoplay style="display: none">	</video>
                 <canvas id="canvas"></canvas>
+                <p class="info">fps: <span id="fps"> 0</span></p>
+                <p class="info">load: <span id="load_stat">0</span>ms</p>
+
             </div>
+
 
         </div>
     </div>
@@ -74,8 +78,7 @@
             navigator.mediaDevices.getUserMedia({
                 video: {
                     width: 640,
-                    height: 480,
-                    frameRate: 30
+                    height: 480
                 }
             }).then(function(stream) {
                 video.srcObject = stream;
@@ -100,8 +103,9 @@
         video.addEventListener('play', function() {
             context.drawImage(this, 0, 0, canvas.width, canvas.height);
         }, false);
-
-        draw(video, canvas, context, 60, options);
+        context.translate(canvas.width, 0)
+        context.scale(-1, 1)
+        draw(video, canvas, context, 60, options, new Date().getTime());
     </script>
 </body>
 

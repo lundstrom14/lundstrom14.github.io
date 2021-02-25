@@ -1,6 +1,14 @@
-function draw(video, canvas, context, frameRate, options) {
+fps_stat = document.querySelector('#fps');
+load_stat = document.querySelector('#load_stat');
+var load_stat_arr = [];
+
+function draw(video, canvas, context, frameRate, options, old_time) {
+
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
     if (video.readyState === video.HAVE_ENOUGH_DATA) {
+
+        tick = new Date().getTime();
+
         switch (options.selection) {
             case "threshold":
                 treshold(context, 100, canvas.width, canvas.height)
@@ -8,10 +16,20 @@ function draw(video, canvas, context, frameRate, options) {
             case "raw":
                 break;
             default:
-                //raw
+        }
+        //calculate and show loadtime
+        let load_time = (new Date().getTime() - tick)
+        load_stat_arr.push(load_time)
+        if (load_stat_arr.length == 30) {
+            load_stat.textContent = ((load_stat_arr.reduce((a, b) => a + b, 0)) / 30).toFixed(0);
+            load_stat_arr.length = 0
         }
     }
-    setTimeout(draw, 1 / frameRate, video, canvas, context, frameRate, options);
+    new_time = new Date().getTime();
+    fps = 1000 / (new_time - old_time);
+    fps_stat.textContent = fps.toFixed(2);
+    setTimeout(draw, 1000 / frameRate, video, canvas, context, frameRate, options, new_time);
+    //requestAnimationFrame() runs much better. implement this.. 
 }
 
 
@@ -39,4 +57,5 @@ function treshold(context, threshold, width, height) {
     image.data = data;
 
     context.putImageData(image, 0, 0);
+
 }
