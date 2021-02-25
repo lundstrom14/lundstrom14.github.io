@@ -383,6 +383,7 @@ function draw() {
         let prev_y = y1;
 
         r1 = Y[k].amp / N;
+
         x1 += r1 * cos((Y[k].freq * time) + Y[k].phase + HALF_PI);
         y1 += r1 * sin((Y[k].freq * time) + Y[k].phase + HALF_PI);
         stroke(255, 100);
@@ -416,7 +417,6 @@ function draw() {
     // Draw connecting lines
     line(x1 - 200, y1, x2, y1);
     line(x2, y2 - 200, x2, y1);
-
 
     stroke('yellow');
     beginShape();

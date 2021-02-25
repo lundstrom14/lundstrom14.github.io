@@ -84,8 +84,8 @@ a:hover {
 
 .box .box-container {
     background-color: #2E3441;
-    width: 15%;
-    height: 400px;
+    width: 17%;
+    height: 350px;
     float: left;
     border-radius: 5px;
 }
@@ -101,8 +101,9 @@ a:hover {
 
 .box .box-container-canvas {
     background-color: #2E3441;
-    width: 75%;
-    height: 400px;
+    flex-grow: 1;
+    width: 50%;
+    height: 350px;
     float: left;
     border-radius: 5px;
 }

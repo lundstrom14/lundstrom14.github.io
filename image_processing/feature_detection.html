@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../style.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="im_pro.css" media="screen" />
+
+
+    <style>
+        #container {
+            margin: 0px auto;
+            width: 640px;
+            height: 480px;
+            border: 5px #333 solid;
+        }
+        
+        #videoElement {
+            width: 640px;
+            height: 480px;
+            background-color: #666;
+        }
+    </style>
+</head>
+
+<body style="background-color:#252934">
+
+    <div class="container">
+
+        <div class="box">
+            <a href="../index.html">
+                <div class="link" style="padding: 15px;">menu</div>
+            </a>
+
+            <div class="box-container">
+                <div class="heading">image processing</div>
+                <a href="#">
+                    <div id="sel_threshold" class="link-button">threshold</div>
+                </a>
+                <a href="#">
+                    <div id="sel_raw" class="link-button">raw</div>
+                </a>
+            </div>
+            <div class="box-container-canvas" id="container">
+                <video id="webcam" autoplay style="display: none">	</video>
+                <canvas id="canvas"></canvas>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="image_processing.js "></script>
+    <script>
+        // seections
+        var options = {
+            selection: "threshold"
+        };
+        var sel_raw = document.querySelector('#sel_raw');
+        var sel_threshold = document.querySelector('#sel_threshold');
+        sel_raw.onclick = function() {
+            options.selection = "raw";
+            console.log(options);
+        };
+        sel_threshold.onclick = function() {
+            options.selection = "threshold";
+            console.log(options);
+        };
+
+
+
+        var video = document.querySelector('#webcam');
+
+        if (navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({
+                video: {
+                    width: 640,
+                    height: 480,
+                    frameRate: 30
+                }
+            }).then(function(stream) {
+                video.srcObject = stream;
+                video.onloadedmetadata = function(e) {
+                    video.play();
+                };
+            }).catch(function(err) {
+
+            });
+        };
+        console.log("get canvas ")
+        var canvas = document.querySelector('canvas');
+        canvas.width = 640;
+        canvas.height = 480;
+
+        var context = canvas.getContext('2d');
+
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+
+        // video 'play' event listener
+        video.addEventListener('play', function() {
+            context.drawImage(this, 0, 0, canvas.width, canvas.height);
+        }, false);
+
+        draw(video, canvas, context, 60, options);
+    </script>
+</body>
+
+</html>
