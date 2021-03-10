@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="../style.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="im_pro.css" media="screen" />
-
+    <script async src="../js/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
 
     <style>
         #container {
@@ -26,7 +26,7 @@
 <body style="background-color:#252934">
 
     <div class="container">
-
+        <p id="cv_status">OpenCV.js is loading...</p>
         <div class="box">
             <a href="../index.html">
                 <div class="link" style="padding: 15px;">menu</div>
@@ -36,12 +36,15 @@
                 <div class="heading">image processing</div>
                 <a href="#">
                     <div id="sel_threshold" class="link-button">threshold
-                        <input type="range" min="0" max="255" value="100" class="slider" id="thresh_range" oninput="update_threshold(this.value)">
+                        <input type="range" min="0" max="255" value="100" class="slider" id="thresh_range" onchange="update_threshold(this.value)">
                         <output id="th_output" class="notransition">100</output>
                     </div>
                 </a>
                 <a href="#">
                     <div id="sel_raw" class="link-button">raw</div>
+                </a>
+                <a href="#">
+                    <div id="sel_edge_detection" class="link-button">edge detection</div>
                 </a>
             </div>
             <div class="box-container-canvas" id="container">
@@ -49,21 +52,22 @@
                 <canvas id="canvas"></canvas>
                 <p class="info">fps: <span id="fps"> 0</span></p>
                 <p class="info">load: <span id="load_stat">0</span>ms</p>
-
             </div>
-
-
         </div>
     </div>
 
     <script src="image_processing.js "></script>
     <script>
-        // seections
+        function onOpenCvReady() {
+            document.getElementById('cv_status').style.display = "none";
+        }
+
         var options = {
             selection: "threshold"
         };
         var sel_raw = document.querySelector('#sel_raw');
         var sel_threshold = document.querySelector('#sel_threshold');
+        var sel_edge_detection = document.querySelector('#sel_edge_detection')
         sel_raw.onclick = function() {
             options.selection = "raw";
             console.log(options);
@@ -72,7 +76,10 @@
             options.selection = "threshold";
             console.log(options);
         };
-
+        sel_edge_detection.onclick = function() {
+            options.selection = "edge_detection";
+            console.log(options);
+        };
 
 
         var video = document.querySelector('#webcam');

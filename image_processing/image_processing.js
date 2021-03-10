@@ -13,9 +13,12 @@ function draw(video, canvas, context, frameRate, options, old_time) {
 
         switch (options.selection) {
             case "threshold":
-                treshold(context, canvas.width, canvas.height)
+                treshold(context, canvas.width, canvas.height);
                 break;
             case "raw":
+                break;
+            case "edge_detection":
+                edge_detection(context, canvas.width, canvas.height);
                 break;
             default:
         }
@@ -56,6 +59,31 @@ function treshold(context, width, height) {
 
     image.data = data;
     context.putImageData(image, 0, 0);
+}
+
+function edge_detection(context, width, height) {
+
+    //just palceholder function. this does nothing yet. 
+    let image, data, r, g, b, color;
+
+    image = context.getImageData(0, 0, width, height);
+    data = image.data;
+
+    for (let i = 0; i < data.length; i = i + 4) {
+        r = data[i];
+        g = data[i + 1];
+        b = data[i + 2];
+
+        if ((r + b + g) / 3 < 30) {
+            data[i] = data[i + 1] = data[i + 2] = 255;
+        } else {
+            //color = 255; // white
+        }
+    }
+
+    image.data = data;
+    context.putImageData(image, 0, 0);
+
 }
 
 function update_threshold(value) {
