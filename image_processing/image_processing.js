@@ -1,6 +1,8 @@
 fps_stat = document.querySelector('#fps');
 load_stat = document.querySelector('#load_stat');
 var load_stat_arr = [];
+var threshold_value = 100;
+var date = new Date();
 
 function draw(video, canvas, context, frameRate, options, old_time) {
 
@@ -11,18 +13,18 @@ function draw(video, canvas, context, frameRate, options, old_time) {
 
         switch (options.selection) {
             case "threshold":
-                treshold(context, 100, canvas.width, canvas.height)
+                treshold(context, canvas.width, canvas.height)
                 break;
             case "raw":
                 break;
             default:
         }
-        //calculate and show loadtime
+        //calculate and show loadtimeS
         let load_time = (new Date().getTime() - tick)
         load_stat_arr.push(load_time)
         if (load_stat_arr.length == 30) {
             load_stat.textContent = ((load_stat_arr.reduce((a, b) => a + b, 0)) / 30).toFixed(0);
-            load_stat_arr.length = 0
+            load_stat_arr.splice(0, load_stat_arr.length)
         }
     }
     new_time = new Date().getTime();
@@ -33,11 +35,10 @@ function draw(video, canvas, context, frameRate, options, old_time) {
 }
 
 
-function treshold(context, threshold, width, height) {
+function treshold(context, width, height) {
     let image, data, r, g, b, color;
 
     image = context.getImageData(0, 0, width, height);
-
     data = image.data;
 
     for (let i = 0; i < data.length; i = i + 4) {
@@ -45,17 +46,20 @@ function treshold(context, threshold, width, height) {
         g = data[i + 1];
         b = data[i + 2];
 
-        if ((r + b + g) / 3 < threshold) {
+        if ((r + b + g) / 3 < threshold_value) {
             color = 0; // black
         } else {
             color = 255; // white
         }
-
         data[i] = data[i + 1] = data[i + 2] = color;
     }
 
     image.data = data;
-
     context.putImageData(image, 0, 0);
+}
 
+function update_threshold(value) {
+    console.log(value);
+    threshold_value = value;
+    document.getElementById('th_output').textContent = value;
 }

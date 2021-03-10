@@ -35,7 +35,10 @@
             <div class="box-container">
                 <div class="heading">image processing</div>
                 <a href="#">
-                    <div id="sel_threshold" class="link-button">threshold</div>
+                    <div id="sel_threshold" class="link-button">threshold
+                        <input type="range" min="0" max="255" value="100" class="slider" id="thresh_range" oninput="update_threshold(this.value)">
+                        <output id="th_output" class="notransition">100</output>
+                    </div>
                 </a>
                 <a href="#">
                     <div id="sel_raw" class="link-button">raw</div>
