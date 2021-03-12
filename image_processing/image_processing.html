@@ -60,62 +60,65 @@
     <script>
         function onOpenCvReady() {
             document.getElementById('cv_status').style.display = "none";
+            init();
         }
 
-        var options = {
-            selection: "threshold"
-        };
-        var sel_raw = document.querySelector('#sel_raw');
-        var sel_threshold = document.querySelector('#sel_threshold');
-        var sel_edge_detection = document.querySelector('#sel_edge_detection')
-        sel_raw.onclick = function() {
-            options.selection = "raw";
-            console.log(options);
-        };
-        sel_threshold.onclick = function() {
-            options.selection = "threshold";
-            console.log(options);
-        };
-        sel_edge_detection.onclick = function() {
-            options.selection = "edge_detection";
-            console.log(options);
-        };
+        function init() {
+            var options = {
+                selection: "threshold"
+            };
+            var sel_raw = document.querySelector('#sel_raw');
+            var sel_threshold = document.querySelector('#sel_threshold');
+            var sel_edge_detection = document.querySelector('#sel_edge_detection')
+            sel_raw.onclick = function() {
+                options.selection = "raw";
+                console.log(options);
+            };
+            sel_threshold.onclick = function() {
+                options.selection = "threshold";
+                console.log(options);
+            };
+            sel_edge_detection.onclick = function() {
+                options.selection = "edge_detection";
+                console.log(options);
+            };
 
 
-        var video = document.querySelector('#webcam');
+            var video = document.querySelector('#webcam');
 
-        if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({
-                video: {
-                    width: 640,
-                    height: 480
-                }
-            }).then(function(stream) {
-                video.srcObject = stream;
-                video.onloadedmetadata = function(e) {
-                    video.play();
-                };
-            }).catch(function(err) {
-                console.log("Might not work in every browser..")
-            });
-        };
-        console.log("get canvas ")
-        var canvas = document.querySelector('canvas');
-        canvas.width = 640;
-        canvas.height = 480;
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: 640,
+                        height: 480
+                    }
+                }).then(function(stream) {
+                    video.srcObject = stream;
+                    video.onloadedmetadata = function(e) {
+                        video.play();
+                    };
+                }).catch(function(err) {
+                    console.log("Might not work in every browser..")
+                });
+            };
+            var canvas = document.querySelector('canvas');
+            canvas.width = 640;
+            canvas.height = 480;
 
-        var context = canvas.getContext('2d');
+            var context = canvas.getContext('2d');
 
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
 
-        // video 'play' event listener
-        video.addEventListener('play', function() {
-            context.drawImage(this, 0, 0, canvas.width, canvas.height);
-        }, false);
-        context.translate(canvas.width, 0)
-        context.scale(-1, 1)
-        draw(video, canvas, context, 60, options, new Date().getTime());
+            // video 'play' event listener
+            video.addEventListener('play', function() {
+                context.drawImage(this, 0, 0, canvas.width, canvas.height);
+            }, false);
+            context.translate(canvas.width, 0)
+            context.scale(-1, 1)
+
+            draw(video, canvas, context, 60, options, new Date().getTime());
+        }
     </script>
 </body>
 

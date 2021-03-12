@@ -2,7 +2,6 @@ fps_stat = document.querySelector('#fps');
 load_stat = document.querySelector('#load_stat');
 var load_stat_arr = [];
 var threshold_value = 100;
-var date = new Date();
 
 function draw(video, canvas, context, frameRate, options, old_time) {
 
@@ -62,32 +61,50 @@ function treshold(context, width, height) {
 }
 
 function edge_detection(context, width, height) {
-
-    //just palceholder function. this does nothing yet. 
-    let image, data, r, g, b, color;
+    let image;
 
     image = context.getImageData(0, 0, width, height);
-    data = image.data;
 
-    for (let i = 0; i < data.length; i = i + 4) {
-        r = data[i];
-        g = data[i + 1];
-        b = data[i + 2];
+    let src = cv.matFromImageData(image);
 
-        if ((r + b + g) / 3 < 30) {
-            data[i] = data[i + 1] = data[i + 2] = 255;
-        } else {
-            //color = 255; // white
-        }
-    }
+    src = convertImageToGray(src);
 
-    image.data = data;
-    context.putImageData(image, 0, 0);
+    let dst = new cv.Mat();
+    let Gx = new cv.Mat();
+    let Gy = new cv.Mat();
+    let Kx = cv.matFromArray(3, 3, cv.CV_8S, [-1, 0, 1, -2, 0, 2, -1, 0, 1]);
+    let Ky = cv.matFromArray(3, 3, cv.CV_8S, [1, 2, 1, 0, 0, 0, -1, -2, -1]);
 
+    cv.filter2D(src, Gx, cv.CV_8U, Kx, anchor = new cv.Point(-1, -1), 0, cv.BORDER_DEFAULT);
+    cv.filter2D(src, Gy, cv.CV_8U, Ky, anchor = new cv.Point(-1, -1), 0, cv.BORDER_DEFAULT);
+
+    cv.add(Gx, Gy, dst);
+    dst = flip(dst);
+
+    cv.imshow('canvas', dst);
+
+    src.delete();
+    dst.delete();
+    Gx.delete();
+    Gy.delete();
+    Kx.delete();
+    Ky.delete();
 }
 
 function update_threshold(value) {
     console.log(value);
     threshold_value = value;
     document.getElementById('th_output').textContent = value;
+}
+
+function convertImageToGray(img) {
+    let dst = new cv.Mat();
+    cv.cvtColor(img, dst, cv.COLOR_RGBA2GRAY, 0);
+    return dst;
+}
+
+function flip(img) {
+    let dst = new cv.Mat();
+    cv.flip(img, dst, 1);
+    return dst;
 }
